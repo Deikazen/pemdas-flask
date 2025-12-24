@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>Edit Data</h2>
+        <form method="POST">
+            <label>Nama Lengkap</label>
+            <input type="text" name="nama" value="{{ user['nama'] }}" required>
+
+            <label>Role</label>
+            <select name="role">
+                <option value="User" {% if user['role']=='User' %} selected {% endif %}>User</option>
+                <option value="Admin" {% if user['role']=='Admin' %} selected {% endif %}>Admin</option>
+            </select>
+
+            <button type="submit">Simpan Perubahan</button>
+            <a href="/" class="back-link">Batal</a>
+        </form>
+    </div>
+
+</body>
+
+</html>
