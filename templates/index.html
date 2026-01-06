@@ -3,147 +3,169 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Flask CRUD Sederhana</title>
+    <title>CRUD Data Diabetes Melitus</title>
     <style>
-        /* CSS GANTENG SEDERHANA */
         body {
-            font-family: sans-serif;
-            background: #f0f2f5;
-            display: flex;
-            justify-content: center;
+            font-family: Arial, sans-serif;
             padding: 20px;
         }
 
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 700px;
-        }
-
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-
-        /* Form */
-        form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            background: #fafafa;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-
-        input,
-        select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            flex: 1;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-            font-weight: bold;
-        }
-
-        .btn-add {
-            background: #28a745;
-        }
-
-        .btn-add:hover {
-            background: #218838;
-        }
-
-        /* Table */
         table {
-            width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            width: 100%;
+            margin-top: 20px;
         }
 
         th,
         td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
         }
 
         th {
-            background: #007bff;
-            color: white;
+            background-color: #f4f4f4;
         }
 
-        /* Tombol Aksi */
-        .btn-edit {
-            background: #ffc107;
-            color: black;
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 14px;
+        input {
+            margin: 4px;
+            padding: 6px;
         }
 
-        .btn-delete {
-            background: #dc3545;
-            color: white;
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 14px;
-            margin-left: 5px;
+        button {
+            padding: 6px 10px;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h2>Daftar User (Flask)</h2>
+    <h2>CRUD Data Penderita Diabetes Melitus</h2>
 
-        <form action="/add" method="POST">
-            <input type="text" name="nama" placeholder="Nama Lengkap" required>
-            <select name="role">
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-            </select>
-            <button type="submit" class="btn-add">Tambah</button>
-        </form>
+    <!-- FORM -->
+    <form id="formData">
+        <input type="hidden" id="id">
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nama</th>
-                    <th>Role</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td>{{ user['id'] }}</td>
-                    <td>{{ user['nama'] }}</td>
-                    <td>{{ user['role'] }}</td>
-                    <td>
-                        <a href="/edit/{{ user['id'] }}" class="btn-edit">Edit</a>
-                        <a href="/delete/{{ user['id'] }}" class="btn-delete"
-                            onclick="return confirm('Yakin hapus?')">Hapus</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        <input type="number" id="kode_provinsi" placeholder="Kode Provinsi" required>
+        <input type="text" id="nama_provinsi" placeholder="Nama Provinsi" required>
+        <input type="number" id="kode_kabupaten_kota" placeholder="Kode Kab/Kota" required>
+        <input type="text" id="nama_kabupaten_kota" placeholder="Nama Kab/Kota" required>
+        <input type="number" id="jumlah_penderita_dm" placeholder="Jumlah DM" required>
+        <input type="text" id="satuan" placeholder="Satuan" required>
+        <input type="number" id="tahun" placeholder="Tahun" required>
+
+        <button type="submit" id="submitBtn">Tambah Data</button>
+        <button type="button" onclick="resetForm()">Batal</button>
+    </form>
+
+    <!-- TABEL -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Provinsi</th>
+                <th>Kab/Kota</th>
+                <th>Jumlah DM</th>
+                <th>Satuan</th>
+                <th>Tahun</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in data %}
+            <tr>
+                <td>{{ d.id }}</td>
+                <td>{{ d.nama_provinsi }}</td>
+                <td>{{ d.nama_kabupaten_kota }}</td>
+                <td>{{ d.jumlah_penderita_dm }}</td>
+                <td>{{ d.satuan }}</td>
+                <td>{{ d.tahun }}</td>
+                <td>
+                    <button onclick='editData({{ d | tojson }})'>Edit</button>
+                    <button onclick="hapusData({{ d.id }})">Hapus</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h3>Grafik Jumlah Penderita Diabetes Melitus</h3>
+    <img src="/grafik" alt="Grafik DM" style="width:100%; max-width:900px;">
+
+
+    <script>
+        let modeEdit = false;
+
+        // SUBMIT (CREATE / UPDATE)
+        document.getElementById("formData").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const id = document.getElementById("id").value;
+
+            const data = {
+                kode_provinsi: kode_provinsi.value,
+                nama_provinsi: nama_provinsi.value,
+                kode_kabupaten_kota: kode_kabupaten_kota.value,
+                nama_kabupaten_kota: nama_kabupaten_kota.value,
+                jumlah_penderita_dm: jumlah_penderita_dm.value,
+                satuan: satuan.value,
+                tahun: tahun.value
+            };
+
+            if (modeEdit) {
+                // UPDATE
+                fetch(`/kab/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .then(() => location.reload());
+            } else {
+                // CREATE
+                fetch("/kab", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .then(() => location.reload());
+            }
+        });
+
+        // EDIT
+        function editData(d) {
+            modeEdit = true;
+
+            document.getElementById("id").value = d.id;
+            kode_provinsi.value = d.kode_provinsi;
+            nama_provinsi.value = d.nama_provinsi;
+            kode_kabupaten_kota.value = d.kode_kabupaten_kota;
+            nama_kabupaten_kota.value = d.nama_kabupaten_kota;
+            jumlah_penderita_dm.value = d.jumlah_penderita_dm;
+            satuan.value = d.satuan;
+            tahun.value = d.tahun;
+
+            document.getElementById("submitBtn").innerText = "Update Data";
+        }
+
+        // DELETE
+        function hapusData(id) {
+            if (!confirm("Yakin hapus data ini?")) return;
+
+            fetch(`/kab/${id}`, { method: "DELETE" })
+                .then(res => res.json())
+                .then(() => location.reload());
+        }
+
+        // RESET FORM
+        function resetForm() {
+            modeEdit = false;
+            document.getElementById("formData").reset();
+            document.getElementById("id").value = "";
+            document.getElementById("submitBtn").innerText = "Tambah Data";
+        }
+    </script>
 
 </body>
 

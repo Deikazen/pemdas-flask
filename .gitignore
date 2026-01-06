@@ -1,0 +1,53 @@
+# =========================
+# Python Virtual Environment
+# =========================
+.virenv/
+venv/
+env/
+ENV/
+
+# =========================
+# Python cache / compiled
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# Python packaging
+# =========================
+*.egg-info/
+*.dist-info/
+.eggs/
+build/
+dist/
+
+# =========================
+# Logs & runtime files
+# =========================
+*.log
+*.pid
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+
+# =========================
+# Jupyter / IPython
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# VS Code
+# =========================
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
