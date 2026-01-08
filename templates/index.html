@@ -64,8 +64,10 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Provinsi</th>
-                <th>Kab/Kota</th>
+                <th>Kode Provinsi</th>
+                <th>Nama Provinsi</th>
+                <th>Kode Kab/Kota</th>
+                <th>Nama Kab/Kota</th>
                 <th>Jumlah DM</th>
                 <th>Satuan</th>
                 <th>Tahun</th>
@@ -76,7 +78,9 @@
             {% for d in data %}
             <tr>
                 <td>{{ d.id }}</td>
+                <td>{{ d.kode_provinsi }}</td>
                 <td>{{ d.nama_provinsi }}</td>
+                <td>{{ d.kode_kabupaten_kota }}</td>
                 <td>{{ d.nama_kabupaten_kota }}</td>
                 <td>{{ d.jumlah_penderita_dm }}</td>
                 <td>{{ d.satuan }}</td>
